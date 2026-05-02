@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} - CSIT Hub</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+
+         *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color:#f8fafc;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+}
+
+.navbar{
+    background:linear-gradient(135deg,#1e3a8a 0%,#2563eb 100%);
+    padding:1rem 2rem;
+    box-shadow:0 4px 12px rgba(0,0,0,0.1);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.navbar h1{
+    color:white;
+    font-size:24px;
+}
+
+.nav-links{
+    display:flex;
+    gap:2rem;
+    flex-wrap:wrap;
+}
+
+.nav-links a{
+    color:white;
+    text-decoration:none;
+    font-weight:500;
+    transition:0.3s;
+    padding:8px 16px;
+    border-radius:8px;
+}
+
+.nav-links a:hover{
+    background:rgba(255,255,255,0.2);
+}
+
+.admin-btn{
+    background:#ef4444;
+}
+
+.admin-btn:hover{
+    background:#dc2626;
+}
+
+.container{
+    width:100%;
+    padding:30px 20px;
+    flex:1;
+}
+
+.page-header{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.page-header h2{
+    color:#1e3a8a;
+    font-size:36px;
+    margin-bottom:10px;
+}
+
+.page-header p{
+    color:#64748b;
+    font-size:16px;
+}
+
+.two-column{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+.accordion{
+    background:white;
+    border-radius:12px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+    overflow:hidden;
+}
+
+.accordion-item{
+    border-bottom:1px solid #e2e8f0;
+}
+
+.accordion-item:last-child{
+    border-bottom:none;
+}
+
+.accordion-header{
+    background:linear-gradient(135deg,#1e3a8a 0%,#2563eb 100%);
+    color:white;
+    padding:18px 20px;
+    cursor:pointer;
+    font-size:18px;
+    font-weight:600;
+    transition:0.3s;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.accordion-header:hover{
+    background:linear-gradient(135deg,#1e40af 0%,#3b82f6 100%);
+}
+
+.accordion-header::after{
+    content:'▼';
+    font-size:14px;
+    transition:0.3s;
+}
+
+.accordion-header.active::after{
+    content:'▲';
+}
+
+.accordion-content{
+    display:none;
+    padding:30px;
+    background:#f8fafc;
+}
+
+.detail-header{
+    font-size:26px;
+    color:#1e3a8a;
+    margin-bottom:20px;
+    border-bottom:2px solid #2563eb;
+    padding-bottom:15px;
+}
+
+.detail-row{
+    display:block;
+    margin-bottom:16px;
+    padding:12px;
+    background:#f8fafc;
+    border-radius:8px;
+    border-left:4px solid #2563eb;
+}
+
+.detail-label{
+    font-weight:600;
+    color:#2563eb;
+    margin-bottom:8px;
+    display:block;
+}
+
+.detail-value{
+    color:#475569;
+    display:block;
+    line-height:1.5;
+}
+
+.back-btn{
+    display:inline-block;
+    background:#2563eb;
+    color:white;
+    padding:10px 20px;
+    border-radius:8px;
+    text-decoration:none;
+    margin-bottom:20px;
+    transition:0.3s;
+}
+
+.back-btn:hover{
+    background:#1e40af;
+}
+
+.footer{
+    background:#1e3a8a;
+    color:white;
+    padding:30px 2rem;
+    text-align:center;
+    margin-top:auto;
+}
+
+.footer p{
+    margin:0;
+}
+
+@media(max-width:768px){
+    .navbar{
+        flex-direction:column;
+        gap:15px;
+    }
+
+    .nav-links{
+        justify-content:center;
+        gap:1rem;
+    }
+
+    .page-header h2{
+        font-size:28px;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1>🎓 CSIT Hub</h1>
+        <div class="nav-links">
+            <a href="/">🏠 Home</a>
+            <a href="/public/students">📋 Students</a>
+            <a href="/public/faculty">👨‍🏫 Faculty</a>
+            <a href="/public/library">📚 Library</a>
+            <a href="/public/departments">🏢 Departments</a>
+            <a href="/public/hostels">🏠 Hostels</a>
+            <a href="/admin/login" class="admin-btn">👤 Admin</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <a href="/" class="back-btn">← Back to Home</a>
+        
+        <div class="page-header">
+            <h2>{{ title }}</h2>
+            <p>Tap an item below to expand and view details.</p>
+        </div>
+
+        <div class="accordion">
+            {% if data %}
+                {% for item in data %}
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        {% if item|length > 1 %}{{ item[1] }}{% else %}{{ item[0] }}{% endif %}
+                    </div>
+                    <div class="accordion-content">
+                        <div class="detail-header">Details</div>
+                        <div class="detail-content">
+                            {% for i in range(columns|length) %}
+                            <div class="detail-row">
+                                <div class="detail-label">{{ columns[i] }}:</div>
+                                <div class="detail-value">{{ item[i] or 'N/A' }}</div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="accordion-item">
+                    <div class="accordion-header" style="background: #f1f5f9; color: #94a3b8; cursor: default;">
+                        No records found
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>© 2026 CSIT Hub - Mahatma Jyotiba Phule Rohilkhand University, Bareilly</p>
+        <p style="font-size: 12px; margin-top: 10px; opacity: 0.8;">Public Information Portal</p>
+    </div>
+
+    <script>
+        function toggleAccordion(header) {
+            const content = header.nextElementSibling;
+            const isActive = header.classList.contains('active');
+
+            // Close all accordion items
+            document.querySelectorAll('.accordion-header').forEach(h => {
+                h.classList.remove('active');
+                h.nextElementSibling.style.display = 'none';
+            });
+
+            // Open the clicked one if it wasn't active
+            if (!isActive) {
+                header.classList.add('active');
+                content.style.display = 'block';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Open the first accordion item by default
+            const firstHeader = document.querySelector('.accordion-header');
+            if (firstHeader) {
+                toggleAccordion(firstHeader);
+            }
+        });
+    </script>
+</body>
+</html>

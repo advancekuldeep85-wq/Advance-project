@@ -1,0 +1,68 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSIT Hub Dashboard</title>
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2>CSIT Hub</h2>
+        <p style="font-size: 12px; opacity: 0.6; margin-bottom: 20px;">Management Portal</p>
+        <hr style="opacity: 0.1; margin-bottom: 25px;">
+        
+        <a href="/" class="tab-btn">📋 Students</a>
+        <a href="/hostels" class="tab-btn">🏫 Hostels</a>
+        <a href="/departments" class="tab-btn">🏢 Departments</a>
+        <a href="/faculty" class="tab-btn">👨‍🏫 Faculty</a>
+        <a href="/library" class="tab-btn">📚 Library</a>
+        <hr style="opacity: 0.1; margin: 20px 0;">
+        <a href="/logout" class="tab-btn" style="background: #dc2626; color: white;">🚪 Logout</a>
+    </div>
+
+    <div class="main-content">
+        <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h2 style="color:#1e3a8a;">{{ title }}</h2>
+                <span class="badge">Live Data</span>
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        {% for col in columns %}
+                            <th>{{ col }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if data %}
+                        {% for row in data %}
+                        <tr>
+                            {% for item in row %}
+                                <td>{{ item }}</td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="10" style="text-align:center; padding: 40px; color: #94a3b8;">
+                                No records found in this module.
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; color: #94a3b8; font-size: 13px;">
+            <p>© 2026 MJPRU CSIT Management System</p>
+            <p>Developed by <b>Kuldeep Singh</b></p>
+        </div>
+    </div>
+
+</body>
+</html>

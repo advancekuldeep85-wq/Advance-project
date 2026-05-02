@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSIT Faculty Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="sidebar">
+        <h2>CSIT Hub</h2>
+        <p style="font-size: 12px; opacity: 0.6; margin-bottom: 20px;">Management Portal</p>
+        <hr style="opacity: 0.1; margin-bottom: 25px;">
+        
+        <a href="/" class="tab-btn">📋 Students</a>
+        <a href="/hostels" class="tab-btn">🏫 Hostels</a>
+        <a href="/departments" class="tab-btn">🏢 Departments</a>
+        <a href="/faculty" class="tab-btn">👨‍🏫 Faculty</a>
+        <a href="/library" class="tab-btn">📚 Library</a>
+        <hr style="opacity: 0.1; margin: 20px 0;">
+        <a href="/logout" class="tab-btn" style="background: #dc2626; color: white;">🚪 Logout</a>
+    </div>
+
+    <div class="main-content">
+        <div class="card faculty-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 24px;">
+                <div>
+                    <h2 style="color:#1e3a8a; margin-bottom: 6px;">{{ title }}</h2>
+                    <p style="color:#64748b; font-size: 14px;">Only CSIT department faculty profiles are shown here.</p>
+                </div>
+                <span class="badge">CSIT</span>
+            </div>
+
+            {% for item in faculty %}
+            <div class="faculty-top">
+                <img class="faculty-photo" src="{{ item.photo }}" alt="Profile Photo">
+                <div class="faculty-info">
+                    <h3>{{ item.name }}</h3>
+                    <p class="designation">{{ item.designation }}</p>
+                    <p class="profile-badge">{{ item.department }} Department</p>
+                </div>
+            </div>
+
+            <div class="faculty-details">
+                <div class="detail-row">
+                    <span>Qualifications</span>
+                    <strong>{{ item.qualifications }}</strong>
+                </div>
+                <div class="detail-row">
+                    <span>Specialization</span>
+                    <strong>{{ item.specialization }}</strong>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; color: #94a3b8; font-size: 13px;">
+            <p>© 2026 MJPRU CSIT Management System</p>
+            <p>Developed by <b>Kuldeep Singh</b></p>
+        </div>
+    </div>
+</body>
+</html>
